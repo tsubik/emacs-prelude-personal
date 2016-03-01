@@ -1,11 +1,13 @@
 (prelude-require-packages
- '(ido-vertical-mode
-   editorconfig
-   comment-dwim-2
-   multiple-cursors
-   neotree
-   projectile-rails
-   ag))
+  '(ido-vertical-mode
+     editorconfig
+     comment-dwim-2
+     multiple-cursors
+     neotree
+     projectile-rails
+     ag
+     tide
+     solarized-theme))
 
 ;; Lines numbering
 (defadvice linum-update-window (around linum-dynamic activate)
@@ -54,6 +56,7 @@
 (global-set-key (kbd "C-M-]") 'er/expand-region)
 (global-set-key (kbd "C-M-[") 'er/contract-region)
 
+;; multiple cursors configuration
 (require 'multiple-cursors)
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
@@ -70,3 +73,36 @@
 (setq create-lockfiles nil)
 (setq auto-save-file-name-transforms `((".*" ,(expand-file-name "~/.emacs.backups/") t)))
 (setq delete-auto-save-files t)
+
+;; disable flyspell spellchecking
+(setq prelude-flyspell nil)
+
+;;flycheck eslint
+(add-hook 'js2-mode-hook 'qoobaa/js2-mode-setup)
+
+(defun qoobaa/js2-mode-setup ()
+  (let ((local-eslint (expand-file-name "node_modules/.bin/eslint" (projectile-project-root))))
+    (when (file-exists-p local-eslint)
+      (setq flycheck-javascript-eslint-executable local-eslint)
+      (js2-mode-hide-warnings-and-errors)
+      (flycheck-mode t)
+      (flycheck-select-checker 'javascript-eslint))))
+
+;; typescript
+(add-hook 'typescript-mode-hook
+  (lambda ()
+    (tide-setup)
+    (flycheck-mode +1)
+    (setq flycheck-check-syntax-automatically '(save mode-enabled))
+    (eldoc-mode +1)
+    ;; company is an optional dependency. You have to
+    ;; install it separately via package-install
+    (company-mode-on)))
+
+;; company config
+(eval-after-load 'company
+  '(progn
+     (define-key company-active-map (kbd "TAB") 'company-complete-common-or-cycle)
+     (define-key company-active-map (kbd "<tab>") 'company-complete-common-or-cycle)))
+;; prevent company dabbrev from downcasing auto completions
+(setq company-dabbrev-downcase nil)
