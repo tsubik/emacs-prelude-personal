@@ -5,9 +5,14 @@
      multiple-cursors
      neotree
      projectile-rails
+
      ag
      tide
      solarized-theme))
+
+;; Increase character limit in line to 100
+(setq whitespace-line-column 100)
+
 
 ;; Lines numbering
 (defadvice linum-update-window (around linum-dynamic activate)
@@ -106,3 +111,25 @@
      (define-key company-active-map (kbd "<tab>") 'company-complete-common-or-cycle)))
 ;; prevent company dabbrev from downcasing auto completions
 (setq company-dabbrev-downcase nil)
+
+;; simple open THIS file command
+(defun open-config ()
+  (interactive)
+  (find-file "~/.emacs.d/personal/tweaks.el"))
+
+;; Run ruby test at point
+(defun get-current-test-name ()
+  (save-excursion
+    (let ((pos)
+           (test-name))
+      (re-search-backward "test \"\\([^\"]+\\)\" do")
+      (setq test-name (buffer-substring-no-properties (match-beginning 1) (match-end 1)))
+      (concat "test_" (replace-regexp-in-string " " "_" test-name)))))
+
+
+(defun run-test-at-point ()
+  (interactive)
+  (let ((root-dir (projectile-project-root)))
+    (compile (format "ruby -Ilib:test -I%s/test %s -n %s" root-dir (expand-file-name (buffer-file-name)) (get-current-test-name)))))
+
+;; end Run ruby test at point
