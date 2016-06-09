@@ -2,10 +2,11 @@
   '(ido-vertical-mode
      editorconfig
      comment-dwim-2
+     flymd
      multiple-cursors
      neotree
      projectile-rails
-
+     alchemist
      ag
      tide
      solarized-theme))
@@ -61,6 +62,13 @@
 (global-set-key (kbd "C-M-]") 'er/expand-region)
 (global-set-key (kbd "C-M-[") 'er/contract-region)
 
+;;flymd config
+(require 'flymd)
+(defun my-flymd-browser-function (url)
+  (let ((browse-url-browser-function 'browse-url-firefox))
+    (browse-url url)))
+(setq flymd-browser-open-function 'my-flymd-browser-function)
+
 ;; multiple cursors configuration
 (require 'multiple-cursors)
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
@@ -85,6 +93,9 @@
 ;;flycheck eslint
 (add-hook 'js2-mode-hook 'qoobaa/js2-mode-setup)
 
+;; alchemist
+(add-hook 'elixir-mode-hook 'alchemist-mode)
+
 (defun qoobaa/js2-mode-setup ()
   (let ((local-eslint (expand-file-name "node_modules/.bin/eslint" (projectile-project-root))))
     (when (file-exists-p local-eslint)
@@ -92,6 +103,13 @@
       (js2-mode-hide-warnings-and-errors)
       (flycheck-mode t)
       (flycheck-select-checker 'javascript-eslint))))
+
+;; json-mode
+(add-hook 'json-mode-hook
+  (lambda ()
+    (make-local-variable 'js-indent-level)
+    (setq js-indent-level 2)))
+
 
 ;; typescript
 (add-hook 'typescript-mode-hook
@@ -116,6 +134,10 @@
 (defun open-config ()
   (interactive)
   (find-file "~/.emacs.d/personal/tweaks.el"))
+
+;; Setting rbenv path
+(setenv "PATH" (concat (getenv "HOME") "/.rbenv/shims:" (getenv "HOME") "/.rbenv/bin:" (getenv "PATH")))
+(setq exec-path (cons (concat (getenv "HOME") "/.rbenv/shims") (cons (concat (getenv "HOME") "/.rbenv/bin") exec-path)))
 
 ;; Run ruby test at point
 (defun get-current-test-name ()
