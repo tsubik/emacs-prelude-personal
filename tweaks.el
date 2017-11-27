@@ -112,9 +112,9 @@
 (add-to-list 'auto-mode-alist '("\\.hbs$" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.erb$" . web-mode))
 ;; react
-;; (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
 ;; (add-to-list 'auto-mode-alist '("\\.js$" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.jsx$" . rjsx-mode))
+;; (add-to-list 'auto-mode-alist '("\\.jsx$" . rjsx-mode))
 (add-to-list 'auto-mode-alist '("\\.js$" . rjsx-mode))
 
 ;; Flycheck
@@ -127,20 +127,9 @@
 (add-hook 'js2-mode-hook 'qoobaa/js2-mode-setup)
 ;; (add-hook 'js2-mode-hook 'tsubik/find-local-standard-executable)
 
-(flycheck-add-mode 'javascript-standard 'rjsx-mode)
-(flycheck-add-mode 'javascript-standard 'web-mode)
-
-;; higher-standard
-(flycheck-define-checker javascript-higher-standard
-  "A Javascript code and style checker for the Higher-Standard Style.
-This checker works with higher-standard."
-  :command ("higher-standard" "--stdin")
-  :standard-input t
-  :error-patterns
-  ((error line-start "  <text>:" line ":" column ":" (message) line-end))
-  :modes (js-mode js-jsx-mode js2-mode js2-jsx-mode js3-mode rjsx-mode web-mode))
-
-(add-to-list 'flycheck-checkers 'javascript-higher-standard)
+;; (flycheck-add-mode 'javascript-standard 'rjsx-mode)
+;; (flycheck-add-mode 'javascript-standard 'web-mode)
+(flycheck-add-mode 'javascript-eslint 'web-mode)
 
 ;; alchemist
 (add-hook 'elixir-mode-hook 'alchemist-mode)
