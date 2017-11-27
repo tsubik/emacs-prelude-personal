@@ -10,6 +10,8 @@
      ag
      tide
      solarized-theme
+     zenburn-theme
+     leuven-theme
      theme-changer
      exec-path-from-shell
      rjsx-mode))
@@ -27,7 +29,7 @@
 (setq calendar-latitude 50.29)
 (setq calendar-longitude 18.67)
 
-(change-theme 'solarized-light 'solarized-dark)
+(change-theme 'leuven 'zenburn)
 
 ;; Lines numbering
 (defadvice linum-update-window (around linum-dynamic activate)
@@ -53,6 +55,9 @@
 (add-hook 'projectile-mode-hook 'projectile-rails-on)
 
 (global-undo-tree-mode 0)
+
+;; add new line at the end of buffer with C-n
+(setq next-line-add-newlines t)
 
 ;; Neotree configuration
 (require 'neotree)
@@ -104,13 +109,29 @@
 ;; disable flyspell spellchecking
 (setq prelude-flyspell nil)
 
+(setq flycheck-display-errors-function nil)
+
 ;;flycheck eslint
 (add-hook 'js2-mode-hook 'qoobaa/js2-mode-setup)
 ;; (add-hook 'js2-mode-hook 'tsubik/find-local-standard-executable)
 
 ;; react
+;; (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
+;; (add-to-list 'auto-mode-alist '("\\.js$" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.jsx$" . rjsx-mode))
+(add-to-list 'auto-mode-alist '("\\.js$" . rjsx-mode))
+
+(setq web-mode-content-types-alist
+  '(("jsx" . "\\.js[x]?\\'")))
+(defun my-web-mode-hook ()
+  "Hooks for Web mode."
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-code-indent-offset 2)
+  (setq web-mode-attr-indent-offset 2)
+)
+(add-hook 'web-mode-hook 'my-web-mode-hook)
 (flycheck-add-mode 'javascript-standard 'rjsx-mode)
+(flycheck-add-mode 'javascript-standard 'web-mode)
 
 ;; higher-standard
 (flycheck-define-checker javascript-higher-standard
@@ -120,7 +141,7 @@ This checker works with higher-standard."
   :standard-input t
   :error-patterns
   ((error line-start "  <text>:" line ":" column ":" (message) line-end))
-  :modes (js-mode js-jsx-mode js2-mode js2-jsx-mode js3-mode rjsx-mode))
+  :modes (js-mode js-jsx-mode js2-mode js2-jsx-mode js3-mode rjsx-mode web-mode))
 
 (add-to-list 'flycheck-checkers 'javascript-higher-standard)
 
