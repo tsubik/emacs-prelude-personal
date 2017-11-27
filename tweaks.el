@@ -124,7 +124,7 @@
 ;; (setq flycheck-display-errors-function nil)
 
 ;; flycheck eslint
-(add-hook 'js2-mode-hook 'qoobaa/js2-mode-setup)
+;; (add-hook 'js2-mode-hook 'qoobaa/js2-mode-setup)
 ;; (add-hook 'js2-mode-hook 'tsubik/find-local-standard-executable)
 
 ;; (flycheck-add-mode 'javascript-standard 'rjsx-mode)
@@ -134,18 +134,18 @@
 ;; alchemist
 (add-hook 'elixir-mode-hook 'alchemist-mode)
 
-(defun qoobaa/js2-mode-setup ()
-  (let ((local-eslint (expand-file-name "node_modules/.bin/eslint" (projectile-project-root))))
-    (when (file-exists-p local-eslint)
-      (setq flycheck-javascript-eslint-executable local-eslint))))
-      (js2-mode-hide-warnings-and-errors)
-      ;; (flycheck-mode t)
-      ;; (flycheck-select-checker 'javascript-eslint))))
-
-;; (defun tsubik/find-local-standard-executable ()
-;;   (let ((local-standard (expand-file-name "node_modules/.bin/standard" (projectile-project-root))))
-;;     (when (file-exists-p local-standard)
-;;       (setq flycheck-javascript-standard-executable local-standard))))
+;; use local eslint from node_modules before global
+;; http://emacs.stackexchange.com/questions/21205/flycheck-with-file-relative-eslint-executable
+(defun my/use-eslint-from-node-modules ()
+  (let* ((root (locate-dominating-file
+                 (or (buffer-file-name) default-directory)
+                 "node_modules"))
+          (eslint (and root
+                    (expand-file-name "node_modules/.bin/eslint"
+                      root))))
+    (when (and eslint (file-executable-p eslint))
+      (setq-local flycheck-javascript-eslint-executable eslint))))
+(add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules)
 
 ;; json-mode
 (add-hook 'json-mode-hook
