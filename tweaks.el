@@ -10,8 +10,6 @@
      ag
      tide
      solarized-theme
-     zenburn-theme
-     leuven-theme
      theme-changer
      exec-path-from-shell
      rjsx-mode))
@@ -38,7 +36,7 @@
 (setq calendar-latitude 50.29)
 (setq calendar-longitude 18.67)
 
-(change-theme 'leuven 'zenburn)
+(change-theme 'dichromacy 'wombat)
 
 ;; Lines numbering
 (defadvice linum-update-window (around linum-dynamic activate)
@@ -116,6 +114,8 @@
 ;; (add-to-list 'auto-mode-alist '("\\.js$" . web-mode))
 ;; (add-to-list 'auto-mode-alist '("\\.jsx$" . rjsx-mode))
 (add-to-list 'auto-mode-alist '("\\.js$" . rjsx-mode))
+;; postcss
+(add-to-list 'auto-mode-alist '("\\.pcss$" . scss-mode))
 
 ;; Flycheck
 ;; disable flyspell spellchecking
@@ -146,6 +146,19 @@
     (when (and eslint (file-executable-p eslint))
       (setq-local flycheck-javascript-eslint-executable eslint))))
 (add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules)
+
+;; use local stylelint from node_modules before global
+;; http://emacs.stackexchange.com/questions/21205/flycheck-with-file-relative-eslint-executable
+(defun my/use-stylelint-from-node-modules ()
+  (let* ((root (locate-dominating-file
+                 (or (buffer-file-name) default-directory)
+                 "node_modules"))
+          (stylelint (and root
+                    (expand-file-name "node_modules/.bin/stylelint"
+                      root))))
+    (when (and stylelint (file-executable-p stylelint))
+      (setq-local flycheck-scss-stylelint-executable stylelint))))
+(add-hook 'flycheck-mode-hook #'my/use-stylelint-from-node-modules)
 
 ;; json-mode
 (add-hook 'json-mode-hook
