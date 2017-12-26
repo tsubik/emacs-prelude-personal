@@ -36,7 +36,7 @@
 (setq calendar-latitude 50.29)
 (setq calendar-longitude 18.67)
 
-(change-theme 'dichromacy 'wombat)
+(change-theme 'solarized-light 'solarized-dark)
 
 ;; Lines numbering
 (defadvice linum-update-window (around linum-dynamic activate)
@@ -94,6 +94,12 @@
     (browse-url url)))
 (setq flymd-browser-open-function 'my-flymd-browser-function)
 
+;; smartparens
+(global-set-key (kbd "C-M-a") 'sp-beginning-of-sexp)
+(global-set-key (kbd "C-M-e") 'sp-end-of-sexp)
+(global-set-key (kbd "M-[") 'sp-backward-unwrap-sexp)
+(global-set-key (kbd "M-]") 'sp-unwrap-sexp)
+
 ;; multiple cursors configuration
 (require 'multiple-cursors)
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
@@ -121,7 +127,7 @@
 ;; disable flyspell spellchecking
 (setq prelude-flyspell nil)
 ;; not sure why I disabled that
-;; (setq flycheck-display-errors-function nil)
+;; (setq flycheck-display-errorsea-function nil)
 
 ;; flycheck eslint
 ;; (add-hook 'js2-mode-hook 'qoobaa/js2-mode-setup)
