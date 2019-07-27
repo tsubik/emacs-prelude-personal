@@ -1,3 +1,4 @@
+;; (projectile-rails-global-mode)
 ;; Seeing is believing in-line ruby code evaluation and showing results as comments
 (setq seeing-is-believing-prefix "C-?")
 (add-hook 'ruby-mode-hook 'seeing-is-believing)
@@ -11,10 +12,10 @@
 ;; (setenv "PATH" (concat (getenv "HOME") "/.rbenv/shims:" (getenv "HOME") "/.rbenv/bin:" (getenv "PATH")))
 ;; (setq exec-path (cons (concat (getenv "HOME") "/.rbenv/shims") (cons (concat (getenv "HOME") "/.rbenv/bin") exec-path)))
 
-;; Robe - Ruby autocomplete
-(add-hook 'ruby-mode-hook 'robe-mode)
-(eval-after-load 'company
-  '(push 'company-robe company-backends))
-(add-hook 'robe-mode-hook 'ac-robe-setup)
+;; ;; Robe - Ruby autocomplete
+;; (add-hook 'ruby-mode-hook 'robe-mode)
+;; (eval-after-load 'company
+;;   '(push 'company-robe company-backends))
+;; (add-hook 'robe-mode-hook 'ac-robe-setup)
 
 (provide 'setup-ruby)

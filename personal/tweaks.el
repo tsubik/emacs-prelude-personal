@@ -2,22 +2,27 @@
   '(
      ag
      alchemist
+     all-the-icons
      comment-dwim-2
      company
+     company-lsp
      editorconfig
      exec-path-from-shell
      flymd
      hideshow-org
      ido-vertical-mode
+     lsp-mode
      multiple-cursors
      neotree
      prettier-js
      projectile-rails
      rjsx-mode
      robe
+     rubocop
      ruby-test-mode
      seeing-is-believing
      solarized-theme
+     monokai-theme
      theme-changer
      tide
      use-package
@@ -42,6 +47,9 @@
 (require 'setup-key-bindings)
 (require 'setup-flycheck)
 (require 'setup-neotree)
+
+;; LSP is a Language Server Protocol, for code completion
+;; (require 'setup-lsp)
 
 ;; MISC configuration
 ;; Increase character limit in line to 100
@@ -93,6 +101,9 @@
 (add-to-list 'auto-mode-alist '("\\.hbs$" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.erb$" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.ejs$" . web-mode))
+;; ruby template from rails
+(add-to-list 'auto-mode-alist '("\\.ruby$" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.arb$" . ruby-mode))
 ;; react
 (add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.js$" . rjsx-mode))
@@ -118,3 +129,17 @@
      (define-key company-active-map (kbd "<tab>") 'company-complete-common-or-cycle)))
 ;; prevent company dabbrev from downcasing auto completions
 (setq company-dabbrev-downcase nil)
+
+;; setting up tide mode
+;; (defun setup-tide-mode ()
+;;   (interactive)
+;;   (tide-setup)
+;;   (flycheck-mode +1)
+;;   (setq flycheck-check-syntax-automatically '(save mode-enabled))
+;;   (eldoc-mode +1)
+;;   (tide-hl-identifier-mode +1)
+;;   ;; company is an optional dependency. You have to
+;;   ;; install it separately via package-install
+;;   (company-mode +1))
+
+;; (add-hook 'js2-mode-hook #'setup-tide-mode)
