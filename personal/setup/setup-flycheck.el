@@ -14,4 +14,7 @@
 ;; (flycheck-add-mode 'javascript-standard 'web-mode)
 (flycheck-add-mode 'javascript-eslint 'web-mode)
 
+;; (setq flycheck-check-syntax-automatically '(save mode-enable))
+;; ;; the default value was '(save idle-change new-line mode-enabled)
+
 (provide 'setup-flycheck)

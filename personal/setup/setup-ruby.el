@@ -8,6 +8,12 @@
 (require 'ruby-test-mode)
 (add-hook 'ruby-mode-hook 'ruby-test-mode)
 
+;; ruby template from rails
+(add-to-list 'auto-mode-alist '("\\.ruby$" . ruby-mode))
+(add-to-list 'auto-mode-alist '("\\.arb$" . ruby-mode))
+
+(setq ruby-insert-encoding-magic-comment nil)
+
 ;; Setting rbenv path
 ;; (setenv "PATH" (concat (getenv "HOME") "/.rbenv/shims:" (getenv "HOME") "/.rbenv/bin:" (getenv "PATH")))
 ;; (setq exec-path (cons (concat (getenv "HOME") "/.rbenv/shims") (cons (concat (getenv "HOME") "/.rbenv/bin") exec-path)))

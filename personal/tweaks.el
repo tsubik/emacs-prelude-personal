@@ -1,3 +1,5 @@
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+
 (prelude-require-packages
   '(
      ag
@@ -6,11 +8,13 @@
      comment-dwim-2
      company
      company-lsp
+     csv-mode
      editorconfig
      exec-path-from-shell
      flymd
      hideshow-org
      ido-vertical-mode
+     imenu-anywhere
      lsp-mode
      multiple-cursors
      neotree
@@ -26,6 +30,7 @@
      theme-changer
      tide
      use-package
+     web-mode
      ))
 
 (require 'hideshow-org)
@@ -43,6 +48,7 @@
 (require 'setup-ruby)
 (require 'setup-stylelint)
 (require 'setup-typescript)
+(require 'setup-webmode)
 
 (require 'setup-key-bindings)
 (require 'setup-flycheck)
@@ -83,8 +89,12 @@
 (global-linum-mode)
 ;; End of lines numbering
 
+;; IDO
 (when (require 'ido-vertical-mode nil 'noerror)
   (ido-vertical-mode 1))
+(setq ido-enable-flex-matching t)
+(setq ido-everywhere t)
+(ido-mode 1)
 
 (when (require 'ag nil 'noerror)
   (setq ag-highlight-search t)
@@ -97,29 +107,8 @@
 ;; EditorConfig
 (editorconfig-mode 1)
 
-;; setting up mode loaders
-(add-to-list 'auto-mode-alist '("\\.hbs$" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.erb$" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.ejs$" . web-mode))
-;; ruby template from rails
-(add-to-list 'auto-mode-alist '("\\.ruby$" . ruby-mode))
-(add-to-list 'auto-mode-alist '("\\.arb$" . ruby-mode))
-;; react
-(add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.js$" . rjsx-mode))
 ;; postcss
 (add-to-list 'auto-mode-alist '("\\.pcss$" . scss-mode))
-
-;; Web mode config
-(setq web-mode-content-types-alist
-  '(("jsx" . "\\.js[x]?\\'")))
-(defun my-web-mode-hook ()
-  "Hooks for Web mode."
-  (setq web-mode-markup-indent-offset 2)
-  (setq web-mode-code-indent-offset 2)
-  (setq web-mode-attr-indent-offset 2)
-  )
-(add-hook 'web-mode-hook 'my-web-mode-hook)
 
 ;; company global config
 (add-hook 'after-init-hook 'global-company-mode)
