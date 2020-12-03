@@ -3,23 +3,25 @@
 (prelude-require-packages
   '(
      ag
-     alchemist
+     ;; alchemist
      all-the-icons
      comment-dwim-2
      company
      company-lsp
+     company-quickhelp
      csv-mode
      editorconfig
      exec-path-from-shell
      flymd
-     hideshow-org
+     ;; hideshow-org
      ido-vertical-mode
      imenu-anywhere
      lsp-mode
      multiple-cursors
      neotree
-     prettier-js
+     ;; prettier-js
      projectile-rails
+     pos-tip
      rjsx-mode
      robe
      rubocop
@@ -41,7 +43,8 @@
 (require 'setup-theme)
 (require 'setup-helpers)
 
-(require 'setup-elixir)
+;; (require 'setup-elixir)
+(require 'setup-company)
 (require 'setup-eslint)
 (require 'setup-json)
 (require 'setup-markdown)
@@ -109,26 +112,3 @@
 
 ;; postcss
 (add-to-list 'auto-mode-alist '("\\.pcss$" . scss-mode))
-
-;; company global config
-(add-hook 'after-init-hook 'global-company-mode)
-(eval-after-load 'company
-  '(progn
-     (define-key company-active-map (kbd "TAB") 'company-complete-common-or-cycle)
-     (define-key company-active-map (kbd "<tab>") 'company-complete-common-or-cycle)))
-;; prevent company dabbrev from downcasing auto completions
-(setq company-dabbrev-downcase nil)
-
-;; setting up tide mode
-;; (defun setup-tide-mode ()
-;;   (interactive)
-;;   (tide-setup)
-;;   (flycheck-mode +1)
-;;   (setq flycheck-check-syntax-automatically '(save mode-enabled))
-;;   (eldoc-mode +1)
-;;   (tide-hl-identifier-mode +1)
-;;   ;; company is an optional dependency. You have to
-;;   ;; install it separately via package-install
-;;   (company-mode +1))
-
-;; (add-hook 'js2-mode-hook #'setup-tide-mode)
